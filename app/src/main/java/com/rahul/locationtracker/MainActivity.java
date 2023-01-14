@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            if (isWorkScheduled(WorkManager.getInstance().getWorkInfosByTag(TAG).get())) {
+            if (isWorkScheduled(WorkManager.getInstance(getApplicationContext()).getWorkInfosByTag(TAG).get())) {
                 mainBinding.appCompatButtonStart.setText(getString(R.string.button_text_stop));
                 mainBinding.message.setText(getString(R.string.message_worker_running));
                 mainBinding.logs.setText(getString(R.string.log_for_running));
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
                             .addTag(TAG)
                             .build();
-                    WorkManager.getInstance().enqueueUniquePeriodicWork("Location", ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
+                    WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("Location", ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
 
                     Toast.makeText(MainActivity.this, "Location Worker Started : " + periodicWork.getId(), Toast.LENGTH_SHORT).show();
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     mainBinding.logs.setText(getString(R.string.log_for_running));
                 } else {
 
-                    WorkManager.getInstance().cancelAllWorkByTag(TAG);
+                    WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(TAG);
 
                     mainBinding.appCompatButtonStart.setText(getString(R.string.button_text_start));
                     mainBinding.message.setText(getString(R.string.message_worker_stopped));
